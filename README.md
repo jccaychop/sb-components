@@ -1,46 +1,156 @@
-# Getting Started with Create React App
+# <b>REACT + TYPESCRIPT + STORYBOOK</b>
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Pasos previos
+<hr>
 
-## Available Scripts
+- Vista previa del README.md
 
-In the project directory, you can run:
+  ```
+  Ctrl+Shift+V
+  ```
 
-### `npm start`
+- Desinstalamos react-scripts
+  ```
+  npm uninstall react-scripts
+  ```
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+- Eliminar la carpeta public
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+- Dentro de la carpeta src, eliminamos:
+  ```
+  App.css
+  App.test.tsx
+  App.tsx
+  index.css
+  logo.png
+  react-app-env.d.ts
+  reportWebVitals.ts
+  setupTests.ts
+  ```
 
-### `npm test`
+- El archivo index.tsx, debe de quedar:
+  ```
+  import React from 'react';
+  import ReactDOM from 'react-dom';
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+  ReactDOM.render(
+    <React.StrictMode>
+      
+    </React.StrictMode>,
+    document.getElementById('root')
+  );
+  ```
 
-### `npm run build`
+<br>
+<br>
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Instalacion de Storybook
+<hr>
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+https://storybook.js.org/docs/react/get-started/install
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+- Add Storybook:
+  ```
+  npx sb init
+  ```
 
-### `npm run eject`
+- En el archivo package.json, debe de quedar:
+  ```
+  "scripts": {
+      "start": "start-storybook -p 6006",
+      "build": "build-storybook",
+      "storybook": "start-storybook -p 6006",
+      "build-storybook": "build-storybook"
+    },
+  ```
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+<br>
+<br>
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## Ejecutar Storybook
+<hr>
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+- En la consola:
+  ```
+  npm run storybook 
+  ```
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+- Por defecto nos muestra el puerto:
+  ```
+  http://localhost:6006/ 
+  ```
 
-## Learn More
+<br>
+<br>
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## Despliegue de Storybook a servidores
+<hr>
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+https://www.npmjs.com/package/http-server
+
+- Abrir el package.json y verificamos lo siguiente:
+  ```
+  "build": "build-storybook",
+  ```
+
+- Entonces, ejecutamos:
+  ```
+  npm run build
+  ```
+
+- Vemos que se crea una carpeta:
+  ```
+  storybook-static
+  ```
+
+- <b>PASO OPCIONAL:</b> Si queremos que se cree la carpeta `storybook-static`, pero con el nombre `docs`, realizamos lo siguiente en el archivo `package.json`:
+  ```
+  "build": "build-storybook -o docs",
+  ```
+
+- Instalamos de manera global y con la consola en modo administrador
+  ```
+  npm install --global http-server
+  ```
+- Se recomienda cerrar la consola y volver a abrirla.
+
+- Luego, en la consola, vamos a al ruta del storybook-static (o docs) y ejecutamos:
+  ```
+  http-server -o
+  ```
+- Y debe de abrirse una ventana del navegador con el proyecto
+
+<br>
+
+## Desplegando en Netlify
+
+- Luego, abrimos netlify, y en al pestaña Sites, arrastramos la carpeta storybook-static (o docs).
+- Esperamos unos segundos y se debe de crear nuestra pagina, la cual luego podemos modificar el nombre.
+
+<br>
+
+## Desplegando en Github y Github Pages
+- Creamos un nuevo repositorio.
+- En nuestro proyecto, inicializamos git:
+  ```
+  git init
+  ```
+- Abrimos el archivo .gitignore y agregamos:
+  ```
+    # production
+    /build
+    /storybook-static
+    ```
+- Renombramos la carpeta `storybook-static` a `docs`, si es que antes no lo hemos hecho.
+- Realizamos el commit.
+- Ejectamos los comandos para subir el repositorio a github.
+- Luego de subirlo a github, seleccionamos Settings.
+- CLic en `Pages`, luego en `Source` seleccionamos `main` y el directorio `docs`, luego clic en `Save`.
+- Veririfcar que este marcado `Enforce HTTPS`
+- Se debe de desplegar el proyecto.
+  
+<br>
+<br>
+
+## Nota:  
+Si tenemos el `build`, con la carpeta `docs` de forma automatica, cada vez que hacemos un `commit` al proyecto, este se desplegará de forma automatica en `Github pages`.
